@@ -10,10 +10,23 @@ import * as fs from "node:fs/promises"
 import * as path from "node:path"
 
 const MEMORIES_HEADING = "## Memories"
+const MEMORIES_FILE = "AGENTS.md"
 const INITIAL_CONTENT = "# User Preferences & Memories\n\n## Memories\n\n"
 
+/**
+ * Resolve the memories file inside the workspace root and refuse paths that
+ * escape it. The root is the OpenCode location directory plus a constant file
+ * name, but validating the final path keeps the file-access boundary explicit
+ * and independent of the caller.
+ */
 export function memoriesPath(root: string): string {
-  return path.join(root, "AGENTS.md")
+  const base = path.resolve(root)
+  const file = path.resolve(base, MEMORIES_FILE)
+  const relative = path.relative(base, file)
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error("Memory path escapes the workspace root")
+  }
+  return file
 }
 
 export async function remember(root: string, memory: string): Promise<string> {
