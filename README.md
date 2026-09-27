@@ -84,9 +84,12 @@ npx github:mnq88/opencode-chat-v2 --uninstall
 ## Development
 
 ```sh
-npm install        # builds via prepare
-npm run build      # tsc only
+npm install
+npm run build      # tsc
 ```
+
+`dist/` is committed because OpenCode's bundled git installer does not run
+build scripts. CI fails if `dist/` is out of sync with `src/`.
 
 ## License
 
