@@ -15,7 +15,9 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 const packageRoot = path.resolve(here, "..")
 const agentsSource = path.join(packageRoot, "agents")
 
-const configDir = process.env.OPENCODE_CONFIG_DIR ?? path.join(os.homedir(), ".config", "opencode")
+const configBase =
+  process.env.XDG_CONFIG_HOME ?? path.join(os.homedir(), ".config")
+const configDir = process.env.OPENCODE_CONFIG_DIR ?? path.join(configBase, "opencode")
 const agentsTarget = path.join(configDir, "agents")
 
 const args = new Set(process.argv.slice(2))
@@ -39,7 +41,7 @@ Options:
   --help       Show this help
 
 Environment:
-  OPENCODE_CONFIG_DIR  Override the OpenCode config directory (default: ~/.config/opencode)
+  OPENCODE_CONFIG_DIR  Override the OpenCode config directory (default: $XDG_CONFIG_HOME/opencode or ~/.config/opencode)
 `)
   process.exit(0)
 }
