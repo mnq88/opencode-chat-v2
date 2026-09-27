@@ -25,7 +25,7 @@ experience natively for V2.
 
 ```sh
 # 1. Install the agents into ~/.config/opencode/agents/
-npx opencode-chat-v2
+npx github:mnq88/opencode-chat-v2
 
 # 2. Add the plugin to opencode.jsonc
 #    (the installer prints the exact snippet, including a SHA-pinned git form)
@@ -35,9 +35,21 @@ For a pinned Git install:
 
 ```jsonc
 {
-  "plugins": ["github:<owner>/opencode-chat-v2#<full-commit-sha>"]
+  "plugins": ["github:mnq88/opencode-chat-v2#<full-commit-sha>"]
 }
 ```
+
+For local development, point the config at the package directory directly:
+
+```jsonc
+{
+  "plugins": ["/absolute/path/to/opencode-chat-v2"]
+}
+```
+
+The package root exposes `server.js`, which OpenCode resolves when it probes a
+directory target. A direct path to `dist/server.js` is rejected by the loader
+("configured plugin path must be a directory").
 
 Then run `opencode service restart`.
 
@@ -55,7 +67,7 @@ missing; the rest of the experience works without it.
 ## Uninstall
 
 ```sh
-npx opencode-chat-v2 --uninstall
+npx github:mnq88/opencode-chat-v2 --uninstall
 # then remove the plugin entry from opencode.jsonc
 ```
 

@@ -98,7 +98,7 @@ async function main() {
   log("")
   log("For a pinned install from git, use the full commit SHA of this repository:")
   log("")
-  log(`  "plugins": ["github:<owner>/opencode-chat-v2#<full-sha>"]`)
+  log(`  "plugins": ["github:mnq88/opencode-chat-v2#<full-sha>"]`)
   log("")
   log("Restart OpenCode afterwards: opencode service restart")
 
