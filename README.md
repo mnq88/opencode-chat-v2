@@ -23,23 +23,24 @@ experience natively for V2.
 
 ## Install
 
+### Recommended: clone into the OpenCode plugins directory
+
+OpenCode discovers plugin packages under `~/.config/opencode/plugins/`
+automatically. Clone at a pinned commit and install the runtime dependency:
+
 ```sh
-# 1. Install the agents into ~/.config/opencode/agents/
-npx github:mnq88/opencode-chat-v2
-
-# 2. Add the plugin to opencode.jsonc
-#    (the installer prints the exact snippet, including a SHA-pinned git form)
+git clone https://github.com/mnq88/opencode-chat-v2 ~/.config/opencode/plugins/opencode-chat-v2
+cd ~/.config/opencode/plugins/opencode-chat-v2
+git checkout <full-commit-sha>   # pin to a release commit
+npm install --ignore-scripts --include=peer --include=optional
+node bin/setup.mjs               # installs the agents into ~/.config/opencode/agents/
 ```
 
-For a pinned Git install:
+Then run `opencode service restart`.
 
-```jsonc
-{
-  "plugins": ["github:mnq88/opencode-chat-v2#<full-commit-sha>"]
-}
-```
+### Alternative: point the config at a checkout
 
-For local development, point the config at the package directory directly:
+Any local checkout works as a config entry:
 
 ```jsonc
 {
@@ -51,7 +52,14 @@ The package root exposes `server.js`, which OpenCode resolves when it probes a
 directory target. A direct path to `dist/server.js` is rejected by the loader
 ("configured plugin path must be a directory").
 
-Then run `opencode service restart`.
+### Known limitation: `opencode plugin add` with Git targets
+
+`opencode plugin add github:mnq88/opencode-chat-v2#<sha>` currently fails with
+`git dep preparation failed`. OpenCode's bundled npm aborts during git
+dependency preparation; the same spec installs cleanly with the system npm.
+Until that is fixed upstream, use one of the two options above. For the same
+reason, `dist/` is committed to this repository so no build step is needed at
+install time.
 
 ### Semantic search (optional)
 
@@ -67,8 +75,8 @@ missing; the rest of the experience works without it.
 ## Uninstall
 
 ```sh
-npx github:mnq88/opencode-chat-v2 --uninstall
-# then remove the plugin entry from opencode.jsonc
+node bin/setup.mjs --uninstall
+# then remove the plugin directory (or config entry) and run opencode service restart
 ```
 
 ## How it maps to the original Chatifier

@@ -94,15 +94,15 @@ async function main() {
   await installAgents()
 
   log("")
-  log("Next: add the plugin to your OpenCode config (opencode.jsonc):")
+  log("Next step: opencode discovers packages under ~/.config/opencode/plugins/ automatically.")
+  log("If you cloned there, you are done; restart OpenCode with: opencode service restart")
+  log("")
+  log("Otherwise add this checkout to your OpenCode config (opencode.jsonc):")
   log("")
   log(`  "plugins": ["${packageRoot.replaceAll("\\", "/")}"]`)
   log("")
-  log("For a pinned install from git, use the full commit SHA of this repository:")
-  log("")
-  log(`  "plugins": ["github:mnq88/opencode-chat-v2#<full-sha>"]`)
-  log("")
-  log("Restart OpenCode afterwards: opencode service restart")
+  log("Note: 'opencode plugin add github:...' currently fails with")
+  log("'git dep preparation failed' because of a bug in OpenCode's bundled npm.")
 
   if (withRag) {
     log("")
